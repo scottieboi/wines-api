@@ -6,13 +6,13 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace wines_api.Models
 {
-    public partial class winesContext : DbContext
+    public partial class DataContext : DbContext
     {
-        public winesContext()
+        public DataContext()
         {
         }
 
-        public winesContext(DbContextOptions<winesContext> options)
+        public DataContext(DbContextOptions<DataContext> options)
             : base(options)
         {
         }
