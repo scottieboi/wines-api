@@ -11,13 +11,17 @@ namespace WinesApi.Api.FindWines
     [Route("wines")]
     public class FindWinesController : ControllerBase
     {
-        [HttpGet]
-        public IEnumerable<Box> Get()
+        private IFindWinesService _findWinesService;
+
+        public FindWinesController(IFindWinesService findWinesService)
         {
-            using (var db = new DataContext())
-            {
-                return db.Boxes.ToList();
-            }
+            _findWinesService = findWinesService;
+        }
+
+        [HttpGet]
+        public IEnumerable<FindWinesResponse> Get()
+        {
+            return _findWinesService.Find();
         }
     }
 }
