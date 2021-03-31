@@ -6,13 +6,18 @@ namespace WinesApi.Api.FindWines
 {
     public class FindWinesService : IFindWinesService
     {
+        private DataContext _dataContext;
+
+        public FindWinesService(DataContext dataContext)
+        {
+            _dataContext = dataContext;
+        }
+
         public IEnumerable<FindWinesResponse> Find()
         {
-            using var db = new DataContext();
-
             var locationsQuery =
-                from wl in db.Winelists
-                join l in db.Locations on wl.Id equals l.Wineid
+                from wl in _dataContext.Winelists
+                join l in _dataContext.Locations on wl.Id equals l.Wineid
                 where l.Cellarversion == 1
                 group l by wl.Id into g
                 select new
@@ -22,7 +27,7 @@ namespace WinesApi.Api.FindWines
                     // Box = g.Select(l => l.Box)
                 };
 
-            return (from wl in db.Winelists
+            return (from wl in _dataContext.Winelists
                     join q in locationsQuery on wl.Id equals q.Id
                     select new FindWinesResponse
                     {

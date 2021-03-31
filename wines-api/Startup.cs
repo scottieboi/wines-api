@@ -1,9 +1,11 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using WinesApi.Api.FindWines;
+using WinesApi.Models;
 
 namespace WinesApi
 {
@@ -20,6 +22,9 @@ namespace WinesApi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+
+            services.AddDbContext<DataContext>(options =>
+                options.UseNpgsql(Configuration.GetConnectionString("DataContext")));
 
             services.AddScoped<IFindWinesService, FindWinesService>();
         }
