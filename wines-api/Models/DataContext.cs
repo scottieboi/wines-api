@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 #nullable disable
 
-namespace wines_api.Models
+namespace WinesApi.Models
 {
     public partial class DataContext : DbContext
     {

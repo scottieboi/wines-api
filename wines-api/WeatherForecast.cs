@@ -1,6 +1,6 @@
 using System;
 
-namespace wines_api
+namespace WinesApi
 {
     public class WeatherForecast
     {

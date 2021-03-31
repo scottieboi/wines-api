@@ -3,9 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
-using wines_api.Models;
+using WinesApi.Models;
 
-namespace wines_api.Api.FindWines
+namespace WinesApi.Api.FindWines
 {
     [ApiController]
     [Route("wines")]

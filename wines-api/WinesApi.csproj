@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <RootNamespace>wines_api</RootNamespace>
+    <RootNamespace>WinesApi</RootNamespace>
     <UserSecretsId>b6b57195-6cd6-443d-bd15-7d57f23a1d16</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
   </PropertyGroup>

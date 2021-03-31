@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 #nullable disable
 
-namespace wines_api.Models
+namespace WinesApi.Models
 {
     public partial class Winetype
     {
