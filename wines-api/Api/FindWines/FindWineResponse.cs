@@ -2,7 +2,7 @@
 
 namespace WinesApi.Api.FindWines
 {
-    public class FindWinesResponse
+    public class FindWineResponse
     {
         public int Id { get; set; }
 
@@ -14,6 +14,6 @@ namespace WinesApi.Api.FindWines
 
         public int? Vintage { get; set; }
 
-        public int Qty { get; set; }
+        public IEnumerable<Box> Boxes { get; set; }
     }
 }

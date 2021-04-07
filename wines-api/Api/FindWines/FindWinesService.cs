@@ -24,20 +24,59 @@ namespace WinesApi.Api.FindWines
                 {
                     Id = g.Key,
                     Qty = g.Sum(l => l.No),
-                    // Box = g.Select(l => l.Box)
                 };
 
             return (from wl in _dataContext.Winelists
                     join q in locationsQuery on wl.Id equals q.Id
                     select new FindWinesResponse
                     {
+                        Id = wl.Id,
                         WineName = wl.Winename,
                         WineType = wl.Winetype.Winetype1,
                         Vineyard = wl.Vineyard.Vineyard1,
                         Vintage = wl.Vintage,
                         Qty = q.Qty ?? 0,
-                        // BoxNos = q.Boxes
                     }).ToList();
+        }
+
+        public FindWineResponse FindById(int id)
+        {
+            var result =
+                (from wl in _dataContext.Winelists
+                 join l in _dataContext.Locations on wl.Id equals l.Wineid
+                 join b in _dataContext.Boxes on l.Box equals b.Boxno
+                 where l.Cellarversion == 1 && wl.Id == id
+                 select new
+                 {
+                     Id = wl.Id,
+                     WineName = wl.Winename,
+                     WineType = wl.Winetype.Winetype1,
+                     Vineyard = wl.Vineyard.Vineyard1,
+                     Vintage = wl.Vintage,
+                     Qty = l.No,
+                     Box = b.Boxno,
+                 }).ToList();
+
+            return result.GroupBy(x => x.Id).Select(wineGrouping =>
+            {
+                var wine = wineGrouping.First();
+
+                return new FindWineResponse
+                {
+                    Id = wineGrouping.Key,
+                    WineName = wine.WineName,
+                    WineType = wine.WineType,
+                    Vineyard = wine.Vineyard,
+                    Vintage = wine.Vintage,
+                    Boxes = wineGrouping
+                        .GroupBy(y => y.Box)
+                        .Select(boxGrouping => new Box
+                        {
+                            BoxNo = boxGrouping.Key,
+                            Qty = boxGrouping.Sum(box => box.Qty ?? 0)
+                        })
+                };
+            }).Single();
         }
     }
 }

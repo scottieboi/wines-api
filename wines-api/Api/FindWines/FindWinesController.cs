@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections;
+﻿using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-using System.Linq;
-using Microsoft.AspNetCore.Mvc;
-using WinesApi.Models;
 
 namespace WinesApi.Api.FindWines
 {
     [ApiController]
-    [Route("wines")]
     public class FindWinesController : ControllerBase
     {
         private IFindWinesService _findWinesService;
@@ -19,9 +14,17 @@ namespace WinesApi.Api.FindWines
         }
 
         [HttpGet]
+        [Route("wines")]
         public IEnumerable<FindWinesResponse> Get()
         {
             return _findWinesService.Find();
+        }
+
+        [HttpGet]
+        [Route("wine")]
+        public FindWineResponse GetById([FromQuery] int id)
+        {
+            return _findWinesService.FindById(id);
         }
     }
 }
