@@ -4,8 +4,8 @@ namespace WinesApi.Api.FindWines
 {
     public interface IFindWinesService
     {
-        IEnumerable<FindWinesResponse> Find();
+        IEnumerable<FindAllWinesResponse> Find();
 
-        FindWineResponse FindById(int id);
+        FindWineByIdResponse FindById(int id);
     }
 }

@@ -13,7 +13,7 @@ namespace WinesApi.Api.FindWines
             _dataContext = dataContext;
         }
 
-        public IEnumerable<FindWinesResponse> Find()
+        public IEnumerable<FindAllWinesResponse> Find()
         {
             var locationsQuery =
                 from wl in _dataContext.Winelists
@@ -28,7 +28,7 @@ namespace WinesApi.Api.FindWines
 
             return (from wl in _dataContext.Winelists
                     join q in locationsQuery on wl.Id equals q.Id
-                    select new FindWinesResponse
+                    select new FindAllWinesResponse
                     {
                         Id = wl.Id,
                         WineName = wl.Winename,
@@ -39,7 +39,7 @@ namespace WinesApi.Api.FindWines
                     }).ToList();
         }
 
-        public FindWineResponse FindById(int id)
+        public FindWineByIdResponse FindById(int id)
         {
             var result =
                 (from wl in _dataContext.Winelists
@@ -61,7 +61,7 @@ namespace WinesApi.Api.FindWines
             {
                 var wine = wineGrouping.First();
 
-                return new FindWineResponse
+                return new FindWineByIdResponse
                 {
                     Id = wineGrouping.Key,
                     WineName = wine.WineName,

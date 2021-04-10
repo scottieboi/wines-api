@@ -15,14 +15,14 @@ namespace WinesApi.Api.FindWines
 
         [HttpGet]
         [Route("wines")]
-        public IEnumerable<FindWinesResponse> Get()
+        public IEnumerable<FindAllWinesResponse> Get()
         {
             return _findWinesService.Find();
         }
 
         [HttpGet]
         [Route("wine")]
-        public FindWineResponse GetById([FromQuery] int id)
+        public FindWineByIdResponse GetById([FromQuery] int id)
         {
             return _findWinesService.FindById(id);
         }

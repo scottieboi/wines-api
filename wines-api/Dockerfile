@@ -7,16 +7,16 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:3.1 AS build
 WORKDIR /src
-COPY ["wines-api/wines-api.csproj", "wines-api/"]
-RUN dotnet restore "wines-api/wines-api.csproj"
+COPY ["wines-api/WinesApi.csproj", "wines-api/"]
+RUN dotnet restore "wines-api/WinesApi.csproj"
 COPY . .
 WORKDIR "/src/wines-api"
-RUN dotnet build "wines-api.csproj" -c Release -o /app/build
+RUN dotnet build "WinesApi.csproj" -c Release -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "wines-api.csproj" -c Release -o /app/publish
+RUN dotnet publish "WinesApi.csproj" -c Release -o /app/publish
 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "wines-api.dll"]
+ENTRYPOINT ["dotnet", "WinesApi.dll"]

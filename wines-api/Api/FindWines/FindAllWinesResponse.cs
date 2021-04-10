@@ -1,8 +1,6 @@
-﻿using System.Collections.Generic;
-
-namespace WinesApi.Api.FindWines
+﻿namespace WinesApi.Api.FindWines
 {
-    public class FindWinesResponse
+    public class FindAllWinesResponse
     {
         public int Id { get; set; }
 

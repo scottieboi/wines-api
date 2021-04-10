@@ -2,7 +2,7 @@
 
 namespace WinesApi.Api.FindWines
 {
-    public class FindWineResponse
+    public class FindWineByIdResponse
     {
         public int Id { get; set; }
 
