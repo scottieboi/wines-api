@@ -76,7 +76,7 @@ namespace WinesApi.Api.FindWines
                             Qty = boxGrouping.Sum(box => box.Qty ?? 0)
                         })
                 };
-            }).Single();
+            }).SingleOrDefault();
         }
     }
 }
