@@ -1,0 +1,26 @@
+version: '3.4'
+
+services:
+  winesapi:
+    image: ${DOCKER_REGISTRY-}winesapi
+    depends_on:
+      - "postgres_image"
+    build:
+      context: .
+      dockerfile: wines-api/Dockerfile
+    ports:
+      - "5000:80"
+      - "5001:443"
+    environment:
+      DB_CONNECTION_STRING: "host=postgres_image;port=5432;database=wines;username=postgres;password=password"
+  postgres_image:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: wines
+      PGDATA: /var/lib/postgresql/data
+    volumes:
+      - ~/volumes/data/db:/var/lib/postgresql/data
+    ports:
+        - 5432:5432

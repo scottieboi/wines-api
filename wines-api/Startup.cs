@@ -1,3 +1,4 @@
+using System;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -21,6 +22,7 @@ namespace WinesApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            var connectionString = Environment.GetEnvironmentVariable("DB_CONNECTION_STRING");
             services.AddCors(options =>
             {
                 options.AddDefaultPolicy(
@@ -33,7 +35,7 @@ namespace WinesApi
             services.AddControllers();
 
             services.AddDbContext<DataContext>(options =>
-                options.UseNpgsql(Configuration.GetConnectionString("DataContext")));
+                options.UseNpgsql(connectionString));
 
             services.AddScoped<IFindWinesService, FindWinesService>();
         }
