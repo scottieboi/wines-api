@@ -6,7 +6,7 @@ namespace WinesApi.Api.FindWines
     [ApiController]
     public class FindWinesController : ControllerBase
     {
-        private IFindWinesService _findWinesService;
+        private readonly IFindWinesService _findWinesService;
 
         public FindWinesController(IFindWinesService findWinesService)
         {

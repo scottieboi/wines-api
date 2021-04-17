@@ -6,7 +6,7 @@ namespace WinesApi.Api.FindWines
 {
     public class FindWinesService : IFindWinesService
     {
-        private DataContext _dataContext;
+        private readonly DataContext _dataContext;
 
         public FindWinesService(DataContext dataContext)
         {

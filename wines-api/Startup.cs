@@ -6,6 +6,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using WinesApi.Api.FindWines;
+using WinesApi.Api.Region;
+using WinesApi.Api.Vineyard;
+using WinesApi.Api.WineType;
 using WinesApi.Models;
 
 namespace WinesApi
@@ -38,6 +41,9 @@ namespace WinesApi
                 options.UseNpgsql(connectionString));
 
             services.AddScoped<IFindWinesService, FindWinesService>();
+            services.AddScoped<IWineTypeService, WineTypeService>();
+            services.AddScoped<IRegionService, RegionService>();
+            services.AddScoped<IVineyardService, VineyardService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
