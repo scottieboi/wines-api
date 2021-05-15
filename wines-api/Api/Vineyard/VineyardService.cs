@@ -23,7 +23,7 @@ namespace WinesApi.Api.Vineyard
                         {
                             Vineyard = wt.Vineyard1,
                             Id = wt.Id
-                        }).ToList();
+                        }).OrderBy(x => x.Vineyard).ToList();
             }
 
             return (from wt in _dataContext.Vineyards
@@ -32,7 +32,7 @@ namespace WinesApi.Api.Vineyard
                     {
                         Vineyard = wt.Vineyard1,
                         Id = wt.Id
-                    }).ToList();
+                    }).OrderBy(x => x.Vineyard).ToList();
         }
     }
 }

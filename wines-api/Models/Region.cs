@@ -1,5 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 #nullable disable
 
@@ -12,7 +12,9 @@ namespace WinesApi.Models
             Winelists = new HashSet<Winelist>();
         }
 
+        [Key]
         public int Id { get; set; }
+
         public string Region1 { get; set; }
 
         public virtual ICollection<Winelist> Winelists { get; set; }

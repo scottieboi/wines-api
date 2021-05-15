@@ -23,7 +23,7 @@ namespace WinesApi.Api.Region
                         {
                             Region = wt.Region1,
                             Id = wt.Id
-                        }).ToList();
+                        }).OrderBy(x => x.Region).ToList();
             }
 
             return (from wt in _dataContext.Regions
@@ -32,7 +32,7 @@ namespace WinesApi.Api.Region
                     {
                         Region = wt.Region1,
                         Id = wt.Id
-                    }).ToList();
+                    }).OrderBy(x => x.Region).ToList();
         }
     }
 }

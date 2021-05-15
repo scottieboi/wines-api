@@ -23,7 +23,7 @@ namespace WinesApi.Api.WineType
                         {
                             WineType = wt.Winetype1,
                             Id = wt.Id
-                        }).ToList();
+                        }).OrderBy(x => x.WineType).ToList();
             }
 
             return (from wt in _dataContext.Winetypes
@@ -32,7 +32,7 @@ namespace WinesApi.Api.WineType
                     {
                         WineType = wt.Winetype1,
                         Id = wt.Id
-                    }).ToList();
+                    }).OrderBy(x => x.WineType).ToList();
         }
     }
 }

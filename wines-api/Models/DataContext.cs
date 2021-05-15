@@ -26,7 +26,7 @@ namespace WinesApi.Models
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.HasAnnotation("Relational:Collation", "C.UTF-8");
+            modelBuilder.HasAnnotation("Relational:Collation", "en_US.utf8");
 
             modelBuilder.Entity<Box>(entity =>
             {
@@ -150,8 +150,7 @@ namespace WinesApi.Models
                 entity.ToTable("winetype");
 
                 entity.Property(e => e.Id)
-                    .HasColumnName("id")
-                    .HasDefaultValueSql("nextval('location_id_seq'::regclass)");
+                    .HasColumnName("id");
 
                 entity.Property(e => e.Winetype1).HasColumnName("winetype");
             });
