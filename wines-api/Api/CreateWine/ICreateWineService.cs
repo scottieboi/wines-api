@@ -4,7 +4,7 @@ namespace WinesApi.Api.CreateWine
 {
     public interface ICreateWineService
     {
-        bool CreateWine(CreateWineRequest wine);
+        bool CreateWine(CreateWineRequest request);
 
         IEnumerable<string> ValidateWineModel(CreateWineRequest wine);
     }

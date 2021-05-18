@@ -13,28 +13,69 @@ namespace WinesApi.Api.CreateWine
             _dataContext = dataContext;
         }
 
-        // TODO: complete this function
-        public bool CreateWine(CreateWineRequest wine)
+        public bool CreateWine(CreateWineRequest request)
         {
-            int? newVineyardId = null;
-            int? newRegionId = null;
-            int? newWineTypeId = null;
-
-            // Create Vineyard, WineType, Region - if not already exists
-            if (wine.VineyardId == null && !string.IsNullOrEmpty(wine.Vineyard))
+            var newWine = new Models.Winelist
             {
-                var existingVineyard = _dataContext.Vineyards.FirstOrDefault(x => x.Vineyard1 == wine.Vineyard);
-                if (existingVineyard == null)
+                Vintage = (short?)request.Vintage,
+                Winename = request.WineName,
+                Percentalcohol = request.PercentAlcohol,
+                Pricepaid = request.PricePaid,
+                Yearbought = (short?)request.YearBought,
+                Bottlesize = (short?)request.BottleSize,
+                Drinkrangefrom = (short?)request.DrinkFrom,
+                Drinkrangeto = (short?)request.DrinkTo,
+                Notes = request.Notes,
+                Rating = (short?)request.Rating,
+                Locations = MapLocations(request.Locations).ToList()
+            };
+
+            // Adds Vineyard to new wine
+            if (request.VineyardId != null)
+            {
+                newWine.Vineyardid = request.VineyardId;
+            }
+            else if (!string.IsNullOrEmpty(request.Vineyard))
+            {
+                var existingVineyard = _dataContext.Vineyards.FirstOrDefault(x => x.Vineyard1 == request.Vineyard);
+                newWine.Vineyard = existingVineyard ?? new Models.Vineyard
                 {
-                    // _dataContext.Vineyards.Add()
-                }
-                else
-                {
-                    newVineyardId = existingVineyard.Id;
-                }
+                    Vineyard1 = request.Vineyard
+                };
             }
 
-            return true;
+            // Adds Region to new wine
+            if (request.RegionId != null)
+            {
+                newWine.Regionid = request.RegionId;
+            }
+            else if (!string.IsNullOrEmpty(request.Region))
+            {
+                var existingRegion = _dataContext.Regions.FirstOrDefault(x => x.Region1 == request.Region);
+                newWine.Region = existingRegion ?? new Models.Region
+                {
+                    Region1 = request.Region
+                };
+            }
+
+            // Adds Wine type to new wine
+            if (request.WineTypeId != null)
+            {
+                newWine.Winetypeid = request.WineTypeId;
+            }
+            else if (!string.IsNullOrEmpty(request.WineType))
+            {
+                var existingWineType = _dataContext.Winetypes.FirstOrDefault(x => x.Winetype1 == request.WineType);
+                newWine.Winetype = existingWineType ?? new Models.Winetype
+                {
+                    Winetype1 = request.WineType
+                };
+            }
+
+            // Persist new wine
+            _dataContext.Winelists.Add(newWine);
+            var persisted = _dataContext.SaveChanges();
+            return persisted >= 1;
         }
 
         public IEnumerable<string> ValidateWineModel(CreateWineRequest wine)
@@ -95,7 +136,43 @@ namespace WinesApi.Api.CreateWine
                 errors.Add("Rating is not between 1 and 100");
             }
 
+            if (!ValidateBottleSize(wine.BottleSize))
+            {
+                errors.Add("Bottle size is invalid");
+            }
+
             return errors;
+        }
+
+        private IEnumerable<Models.Location> MapLocations(IEnumerable<Location> locations)
+        {
+            return locations.Aggregate(new List<Models.Location>(), (locs, l) =>
+            {
+                var existingBox = _dataContext.Boxes.Find(l.BoxNo);
+                if (existingBox != null)
+                {
+                    // Adds to existing box
+                    locs.Add(new Models.Location
+                    {
+                        Box = l.BoxNo,
+                        No = l.Qty
+                    });
+                }
+                else if (l.BoxNo.HasValue)
+                {
+                    // Adds to new box, when provided with a box no
+                    locs.Add(new Models.Location
+                    {
+                        BoxNavigation = new Box
+                        {
+                            Boxno = l.BoxNo.Value
+                        },
+                        No = l.Qty
+                    });
+                }
+
+                return locs;
+            }).ToList();
         }
 
         /// <summary>
@@ -124,6 +201,20 @@ namespace WinesApi.Api.CreateWine
                 return true;
             }
             return rating >= 1 && rating <= 100;
+        }
+
+        /// <summary>
+        /// Validates a given bottle size
+        /// </summary>
+        /// <param name="rating">Rating to validate</param>
+        /// <returns>True when rating is null, or true when valid bottle size in mL</returns>
+        private static bool ValidateBottleSize(int? bottleSize)
+        {
+            if (bottleSize == null)
+            {
+                return true;
+            }
+            return bottleSize >= 1 && bottleSize <= short.MaxValue;
         }
     }
 }

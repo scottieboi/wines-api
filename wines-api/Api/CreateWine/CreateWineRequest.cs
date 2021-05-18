@@ -33,7 +33,9 @@ namespace WinesApi.Api.CreateWine
 
         public int? DrinkTo { get; set; }
 
-        public int? PricePaid { get; set; }
+        public float? PercentAlcohol { get; set; }
+
+        public decimal? PricePaid { get; set; }
 
         public int? Rating { get; set; }
 
