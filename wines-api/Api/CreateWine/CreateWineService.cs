@@ -27,7 +27,7 @@ namespace WinesApi.Api.CreateWine
                 Drinkrangeto = (short?)request.DrinkTo,
                 Notes = request.Notes,
                 Rating = (short?)request.Rating,
-                Locations = MapLocations(request.Locations).ToList()
+                Locations = MapLocations(request.Locations)?.ToList()
             };
 
             // Adds Vineyard to new wine
@@ -146,7 +146,7 @@ namespace WinesApi.Api.CreateWine
 
         private IEnumerable<Models.Location> MapLocations(IEnumerable<Location> locations)
         {
-            return locations.Aggregate(new List<Models.Location>(), (locs, l) =>
+            return locations?.Aggregate(new List<Models.Location>(), (locs, l) =>
             {
                 var existingBox = _dataContext.Boxes.Find(l.BoxNo);
                 if (existingBox != null)
