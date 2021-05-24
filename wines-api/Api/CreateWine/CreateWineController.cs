@@ -27,7 +27,7 @@ namespace WinesApi.Api.CreateWine
             }
 
             var created = _createWineService.CreateWine(wine);
-            return created ? Ok() : StatusCode(500);
+            return created ? (IActionResult)Ok() : StatusCode(409, new { Error = "Cannot create wine" });
         }
     }
 }
