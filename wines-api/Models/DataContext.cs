@@ -50,7 +50,7 @@ namespace WinesApi.Models
 
                 entity.HasIndex(e => e.Wineid, "location_wineid_fk");
 
-                entity.Property(e => e.Id).HasColumnName("id");
+                entity.Property(e => e.Id).HasColumnName("id").ValueGeneratedOnAdd();
 
                 entity.Property(e => e.Box).HasColumnName("box");
 
@@ -75,7 +75,7 @@ namespace WinesApi.Models
             {
                 entity.ToTable("region");
 
-                entity.Property(e => e.Id).HasColumnName("id");
+                entity.Property(e => e.Id).HasColumnName("id").ValueGeneratedOnAdd();
 
                 entity.Property(e => e.Region1).HasColumnName("region");
             });
@@ -84,7 +84,7 @@ namespace WinesApi.Models
             {
                 entity.ToTable("vineyard");
 
-                entity.Property(e => e.Id).HasColumnName("id");
+                entity.Property(e => e.Id).HasColumnName("id").ValueGeneratedOnAdd();
 
                 entity.Property(e => e.Vineyard1).HasColumnName("vineyard");
             });
@@ -99,7 +99,7 @@ namespace WinesApi.Models
 
                 entity.HasIndex(e => e.Winetypeid, "winelist_winetypeid_fkey");
 
-                entity.Property(e => e.Id).HasColumnName("id");
+                entity.Property(e => e.Id).HasColumnName("id").ValueGeneratedOnAdd();
 
                 entity.Property(e => e.Bottlesize).HasColumnName("bottlesize");
 
@@ -149,8 +149,7 @@ namespace WinesApi.Models
             {
                 entity.ToTable("winetype");
 
-                entity.Property(e => e.Id)
-                    .HasColumnName("id");
+                entity.Property(e => e.Id).HasColumnName("id").ValueGeneratedOnAdd();
 
                 entity.Property(e => e.Winetype1).HasColumnName("winetype");
             });

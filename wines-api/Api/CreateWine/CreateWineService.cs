@@ -155,7 +155,8 @@ namespace WinesApi.Api.CreateWine
                     locs.Add(new Models.Location
                     {
                         Box = l.BoxNo,
-                        No = l.Qty
+                        No = l.Qty,
+                        Cellarversion = 1,
                     });
                 }
                 else if (l.BoxNo.HasValue)
@@ -167,7 +168,8 @@ namespace WinesApi.Api.CreateWine
                         {
                             Boxno = l.BoxNo.Value
                         },
-                        No = l.Qty
+                        No = l.Qty,
+                        Cellarversion = 1
                     });
                 }
 
