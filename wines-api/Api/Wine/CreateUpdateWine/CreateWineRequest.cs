@@ -1,14 +1,7 @@
 ﻿using System.Collections.Generic;
 
-namespace WinesApi.Api.CreateWine
+namespace WinesApi.Api.Wine.CreateUpdateWine
 {
-    public class Location
-    {
-        public int? BoxNo { get; set; }
-
-        public int? Qty { get; set; }
-    }
-
     public class CreateWineRequest
     {
         public string WineName { get; set; }

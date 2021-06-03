@@ -1,4 +1,4 @@
-﻿namespace WinesApi.Api.FindWines
+﻿namespace WinesApi.Api.Wine.FindWine
 {
     public class Box
     {

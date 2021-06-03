@@ -5,10 +5,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using WinesApi.Api.CreateWine;
-using WinesApi.Api.FindWines;
 using WinesApi.Api.Region;
 using WinesApi.Api.Vineyard;
+using WinesApi.Api.Wine.CreateUpdateWine;
+using WinesApi.Api.Wine.FindWine;
 using WinesApi.Api.WineType;
 using WinesApi.Models;
 
@@ -41,11 +41,13 @@ namespace WinesApi
             services.AddDbContext<DataContext>(options =>
                 options.UseNpgsql(connectionString));
 
-            services.AddScoped<IFindWinesService, FindWinesService>();
+            services.AddScoped<IFindWineService, FindWineService>();
             services.AddScoped<IWineTypeService, WineTypeService>();
             services.AddScoped<IRegionService, RegionService>();
             services.AddScoped<IVineyardService, VineyardService>();
-            services.AddScoped<ICreateWineService, CreateWineService>();
+            services.AddScoped<ICreateUpdateWineService, CreateUpdateWineService>();
+            services.AddScoped<IValidateWineRepository, ValidateWineRepository>();
+            services.AddScoped<ICreateUpdateWineRepository, CreateUpdateWineRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

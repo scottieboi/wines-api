@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 
-namespace WinesApi.Api.FindWines
+namespace WinesApi.Api.Wine.FindWine
 {
-    public interface IFindWinesService
+    public interface IFindWineService
     {
         IEnumerable<FindAllWinesResponse> Find();
 

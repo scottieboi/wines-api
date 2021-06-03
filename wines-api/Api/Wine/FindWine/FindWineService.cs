@@ -2,13 +2,13 @@
 using System.Linq;
 using WinesApi.Models;
 
-namespace WinesApi.Api.FindWines
+namespace WinesApi.Api.Wine.FindWine
 {
-    public class FindWinesService : IFindWinesService
+    public class FindWineService : IFindWineService
     {
         private readonly DataContext _dataContext;
 
-        public FindWinesService(DataContext dataContext)
+        public FindWineService(DataContext dataContext)
         {
             _dataContext = dataContext;
         }
