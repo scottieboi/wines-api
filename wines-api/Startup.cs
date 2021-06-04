@@ -1,4 +1,3 @@
-using System;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -21,12 +20,12 @@ namespace WinesApi
             Configuration = configuration;
         }
 
-        public IConfiguration Configuration { get; }
+        private IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            var connectionString = Environment.GetEnvironmentVariable("DB_CONNECTION_STRING");
+            var connectionString = Configuration.GetConnectionString("DefaultConnection");
             services.AddCors(options =>
             {
                 options.AddDefaultPolicy(
