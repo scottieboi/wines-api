@@ -1,4 +1,5 @@
-﻿using UnitTests.TestInfrastructure;
+﻿using System.Collections.Generic;
+using UnitTests.TestInfrastructure;
 using WinesApi.Models;
 
 namespace UnitTests.Api.Wine
@@ -36,11 +37,40 @@ namespace UnitTests.Api.Wine
 
             var box = new Box
             {
-                Boxno = 55,
-                Size = "big"
+                Boxno = 101,
+                Size = "Tiny"
             };
 
-            context.AddRange(region, wineType, vineyard, box);
+            var wineList = new Winelist
+            {
+                Id = 50,
+                Winetype = new Winetype
+                {
+                    Winetype1 = "Sav Blanc"
+                },
+                Region = new Region
+                {
+                    Region1 = "My Region"
+                },
+                Vineyard = new Vineyard
+                {
+                    Vineyard1 = "My vineyard"
+                },
+                Locations = new List<Location>
+                {
+                    new Location
+                    {
+                        BoxNavigation = new Box
+                        {
+                            Boxno = 55,
+                            Size = "big"
+                        },
+                        No = 2
+                    }
+                }
+            };
+
+            context.AddRange(region, wineType, vineyard, box, wineList);
             context.SaveChanges();
         }
     }

@@ -1,35 +1,33 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
-using WinesApi.Models;
 
 namespace WinesApi.Api.Wine.CreateUpdateWine
 {
     public class CreateUpdateWineRepository : ICreateUpdateWineRepository
     {
-        private readonly DataContext _dataContext;
+        private readonly Models.DataContext _dataContext;
 
-        public CreateUpdateWineRepository(DataContext dataContext)
+        public CreateUpdateWineRepository(Models.DataContext dataContext)
         {
             _dataContext = dataContext;
         }
 
         public bool CreateWine(CreateWineRequest request)
         {
-            var wineList = MapRequestToWineListModel(request);
-
-            // Persist new wine
-            _dataContext.Winelists.Add(wineList);
             try
             {
+                var wineList = MapRequestToWineListModel(request);
+                _dataContext.Winelists.Add(wineList);
+                
                 var persisted = _dataContext.SaveChanges();
                 return persisted >= 1;
             }
-            catch (DbUpdateConcurrencyException ex)
+            catch (DbUpdateConcurrencyException)
             {
                 return false;
             }
-            catch (DbUpdateException ex)
+            catch (DbUpdateException)
             {
                 return false;
             }
@@ -37,42 +35,56 @@ namespace WinesApi.Api.Wine.CreateUpdateWine
 
         public bool UpdateWine(UpdateWineRequest request)
         {
-            var wineList = MapRequestToWineListModel(request);
-            wineList.Id = request.Id;
-
-            // Persist update wine
-            _dataContext.Winelists.Update(wineList);
-            try
-            {
-                var persisted = _dataContext.SaveChanges();
-                return persisted >= 1;
-            }
-            catch (DbUpdateConcurrencyException ex)
+            // Check wine already exists
+            var existingWine = _dataContext.Winelists.Find(request.Id);
+            if (existingWine == null)
             {
                 return false;
             }
-            catch (DbUpdateException ex)
+            
+            // Clear any existing locations
+            _dataContext.Entry(existingWine).Collection(w => w.Locations).Load();
+            if (existingWine.Locations?.Any() ?? false)
+            {
+                _dataContext.Locations.RemoveRange(existingWine.Locations);
+            }
+
+            try
+            {
+                // Populate data in WineList model, and persist
+                var wineList = MapRequestToWineListModel(request, existingWine);
+                _dataContext.Winelists.Update(wineList);
+                
+                var persisted = _dataContext.SaveChanges();
+                return persisted >= 1;
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                return false;
+            }
+            catch (DbUpdateException)
             {
                 return false;
             }
         }
 
-        private Models.Winelist MapRequestToWineListModel(CreateWineRequest request)
+        private Models.Winelist MapRequestToWineListModel(
+            CreateWineRequest request,
+            Models.Winelist existingWine = null)
         {
-            var newWine = new Models.Winelist
-            {
-                Vintage = (short?) request.Vintage,
-                Winename = request.WineName,
-                Percentalcohol = request.PercentAlcohol,
-                Pricepaid = request.PricePaid,
-                Yearbought = (short?) request.YearBought,
-                Bottlesize = (short?) request.BottleSize,
-                Drinkrangefrom = (short?) request.DrinkFrom,
-                Drinkrangeto = (short?) request.DrinkTo,
-                Notes = request.Notes,
-                Rating = (short?) request.Rating,
-                Locations = MapLocations(request.Locations)?.ToList()
-            };
+            var newWine = existingWine ?? new Models.Winelist();
+
+            newWine.Vintage = (short?) request.Vintage;
+            newWine.Winename = request.WineName;
+            newWine.Percentalcohol = request.PercentAlcohol;
+            newWine.Pricepaid = request.PricePaid;
+            newWine.Yearbought = (short?) request.YearBought;
+            newWine.Bottlesize = (short?) request.BottleSize;
+            newWine.Drinkrangefrom = (short?) request.DrinkFrom;
+            newWine.Drinkrangeto = (short?) request.DrinkTo;
+            newWine.Notes = request.Notes;
+            newWine.Rating = (short?) request.Rating;
+            newWine.Locations = MapLocations(request.Locations)?.ToList();
 
             // Adds Vineyard to new wine
             if (request.VineyardId != null)
@@ -139,7 +151,7 @@ namespace WinesApi.Api.Wine.CreateUpdateWine
                     // Adds to new box, when provided with a box no
                     locs.Add(new Models.Location
                     {
-                        BoxNavigation = new Box
+                        BoxNavigation = new Models.Box
                         {
                             Boxno = l.BoxNo.Value
                         },
